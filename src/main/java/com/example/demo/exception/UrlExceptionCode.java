@@ -1,10 +1,8 @@
 package com.example.demo.exception;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 
 @RequiredArgsConstructor
 @Getter

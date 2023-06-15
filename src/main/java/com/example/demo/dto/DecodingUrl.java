@@ -8,6 +8,7 @@ public class DecodingUrl {
     @Getter
     @Builder
     public static class Response {
+        private final String encodedUrl;
         private final String decodedUrl;
     }
 }

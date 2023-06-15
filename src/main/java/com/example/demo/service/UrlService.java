@@ -1,13 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.data.UrlData;
+import com.example.demo.dto.UrlRecordDto;
 import com.example.demo.exception.UrlException;
 import com.example.demo.exception.UrlExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,12 +19,19 @@ import java.util.Map;
 public class UrlService {
     private final UrlData urlData;
 
-    public Map<String,String> getAllUrls() {
-        Map<String,String> datas = new HashMap<>();
-        for (int i = 0; i<urlData.sizeOfUrls(); i++) {
-            String encoded = encodeBase62(i);
-            datas.put(encoded,urlData.getUrlOfIndex(i));
+    public Map<String,Object> getAllUrls() {
+        Map<String,Object> datas = new HashMap<>();
+        datas.put("size",urlData.sizeOfUrls());
+
+        List<UrlRecordDto> urls = new ArrayList<>(urlData.sizeOfUrls());
+        for (int i=0; i<urlData.sizeOfUrls(); i++) {
+            urls.add(UrlRecordDto.builder()
+                    .originalUrl(urlData.getUrlOfIndex(i))
+                    .encodedUrl(encodeBase62(i))
+                    .build());
         }
+        datas.put("urls",urls);
+
         return datas;
     }
 

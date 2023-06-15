@@ -5,14 +5,12 @@ import com.example.demo.dto.DecodingUrl;
 import com.example.demo.dto.EncodingUrl;
 import com.example.demo.dto.ReqNumResponse;
 import com.example.demo.service.UrlService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -22,7 +20,7 @@ public class UrlController {
     private final UrlService urlService;
 
     @GetMapping("/url")
-    public Map<String,String> getAllUrls() {
+    public Map<String,Object> getAllUrls() {
         return urlService.getAllUrls();
     }
 
@@ -39,6 +37,7 @@ public class UrlController {
     public DecodingUrl.Response decodeUrl(@PathVariable("encodedUrl")
                                              final String encodedUrl) {
         return DecodingUrl.Response.builder()
+                .encodedUrl(encodedUrl)
                 .decodedUrl(urlService.decodeUrl(encodedUrl))
                 .build();
     }
