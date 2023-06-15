@@ -7,31 +7,52 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UrlService {
     private final UrlData urlData;
 
+    public Map<String,String> getAllUrls() {
+        Map<String,String> datas = new HashMap<>();
+        for (int i = 0; i<urlData.sizeOfUrls(); i++) {
+            String encoded = encodeBase62(i);
+            datas.put(encoded,urlData.getUrlOfIndex(i));
+        }
+        return datas;
+    }
+
     // url 받아서 encode -> 결과 response
     public String encodeUrl(final String url) {
-        validateUrl(url);
-        urlData.getUrls().add(url);
-        return encodeBase62(urlData.getUrls().size()-1);
+        validateRegisteringUrl(url);
+        return encodeBase62(urlData.addUrl(url));
     }
 
     // encoded 문자열 받아서 decode
     public String decodeUrl(final String encodedUrl) {
         int decodedIndex = decodeBase62(encodedUrl);
         validateIndex(decodedIndex);
-        return urlData.getUrls().get(decodedIndex);
+        return urlData.getUrlOfIndex(decodedIndex);
     }
 
     public String getRedirectUrl(final String encodedUrl) {
+        int decodedIndex = decodeBase62(encodedUrl);
+        validateIndex(decodedIndex);
+        urlData.increaseReqNumOfIndex(decodedIndex);
         return "http://" + decodeUrl(encodedUrl);
     }
 
+    public int getRequestedNumOfUrl(final String encodedUrl) {
+        int decodedIndex = decodeBase62(encodedUrl);
+        validateIndex(decodedIndex);
+        return urlData.getReqNumOfIndex(decodedIndex);
+    }
     private static final String TABLE = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    // int index -> String encodedValue
     private String encodeBase62(int index) {
         StringBuilder res = new StringBuilder();
         do {
@@ -42,6 +63,7 @@ public class UrlService {
         return res.toString();
     }
 
+    // String encodedValue -> int decodedIndex
     private int decodeBase62(final String encodedUrl) {
         int index = 0;
         int pow = 1;
@@ -52,20 +74,22 @@ public class UrlService {
         return index;
     }
 
-    private void validateUrl(final String url) {
-        if (url.isEmpty()) {
+    private void validateRegisteringUrl(final String registeringUrl) {
+        if (registeringUrl.isEmpty()) {
             throw new UrlException(UrlExceptionCode.EMPTY_DATA);
         }
-        if (!url.contains(".")) {
+        if (!registeringUrl.contains(".")
+                || urlData.isReserved(registeringUrl)) {
             throw new UrlException(UrlExceptionCode.INVALID_URL);
         }
-        if (urlData.getUrls().contains(url)) {
+        if (urlData.contains(registeringUrl)) {
             throw new UrlException(UrlExceptionCode.ALREADY_EXISTS);
         }
     }
 
+    // decoded index url data 있는지 확인
     private void validateIndex(final int index) {
-        if (index < 0 || index >= urlData.getUrls().size()) {
+        if (index < 0 || index >= urlData.sizeOfUrls()) {
             throw new UrlException(UrlExceptionCode.NOT_FOUND_URL);
         }
     }

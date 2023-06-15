@@ -27,7 +27,7 @@ public class UrlExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<UrlExceptionResponse> handleRemainException(Exception e) {
         UrlExceptionResponse response = UrlExceptionResponse.builder()
-                .message(e.getMessage()).build();
+                .message("알 수 없는 오류가 발생했습니다!").build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

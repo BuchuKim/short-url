@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.data.UrlData;
 import com.example.demo.dto.DecodingUrl;
 import com.example.demo.dto.EncodingUrl;
+import com.example.demo.dto.ReqNumResponse;
 import com.example.demo.service.UrlService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,16 +19,10 @@ import java.util.Map;
 @Slf4j
 public class UrlController {
     private final UrlService urlService;
-    private final UrlData urlData;
 
     @GetMapping("/url")
     public Map<String,String> getAllUrls() {
-        Map<String,String> datas = new HashMap<>();
-        List<String> urls = urlData.getUrls();
-        for (int i = 0; i < urls.size(); i++) {
-            datas.put(String.valueOf(i),urls.get(i));
-        }
-        return datas;
+        return urlService.getAllUrls();
     }
 
     @PostMapping("/url")
@@ -45,6 +37,15 @@ public class UrlController {
                                              final String encodedUrl) {
         return DecodingUrl.Response.builder()
                 .decodedUrl(urlService.decodeUrl(encodedUrl))
+                .build();
+    }
+
+    @GetMapping("/check/{encodedUrl}")
+    public ReqNumResponse getRequestedNumber(@PathVariable("encodedUrl") final String encodedUrl) {
+        return ReqNumResponse.builder()
+                .encodedUrl(encodedUrl)
+                .originalUrl(urlService.decodeUrl(encodedUrl))
+                .requestedNumber(urlService.getRequestedNumOfUrl(encodedUrl))
                 .build();
     }
 
