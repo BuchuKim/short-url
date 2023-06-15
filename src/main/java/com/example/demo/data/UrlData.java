@@ -20,7 +20,7 @@ public class UrlData {
     }
 
     // ArrayList url 추가하고 index return
-    public int addUrl(String url) {
+    public int addUrl(final String url) {
         urls.add(url);
         requestNum.add(0);
         return urls.size()-1;

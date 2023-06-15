@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,8 +27,10 @@ public class UrlController {
     }
 
     @PostMapping("/url")
-    public EncodingUrl.Response encodeUrl(@Valid @RequestBody final EncodingUrl.Request request) {
+    public EncodingUrl.Response encodeUrl(@Valid @RequestBody
+                                              final EncodingUrl.Request request) {
         return EncodingUrl.Response.builder()
+                .originalUrl(request.getUrl())
                 .encodedUrl(urlService.encodeUrl(request.getUrl()))
                 .build();
     }
@@ -50,8 +53,7 @@ public class UrlController {
     }
 
     @GetMapping("/{encodedUrl}")
-    public void redirect(@PathVariable("encodedUrl") final String encodedUrl,
-                         HttpServletResponse response) throws IOException {
-        response.sendRedirect(urlService.getRedirectUrl(encodedUrl));
+    public RedirectView redirect(@PathVariable("encodedUrl") final String encodedUrl) {
+        return new RedirectView(urlService.getRedirectUrl(encodedUrl));
     }
 }

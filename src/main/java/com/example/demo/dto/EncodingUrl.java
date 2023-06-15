@@ -20,6 +20,7 @@ public class EncodingUrl {
     @Getter
     @Builder
     public static class Response {
+        private String originalUrl;
         private String encodedUrl;
     }
 }
