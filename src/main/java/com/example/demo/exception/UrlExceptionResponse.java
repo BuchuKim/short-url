@@ -6,5 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class UrlExceptionResponse {
+    private final String code;
     private final String message;
 }

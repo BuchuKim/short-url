@@ -12,6 +12,7 @@ public class UrlExceptionHandler {
     @ExceptionHandler(UrlException.class)
     public ResponseEntity<UrlExceptionResponse> handleUrlException(UrlException e) {
         UrlExceptionResponse response = UrlExceptionResponse.builder()
+                .code(String.valueOf(e.getUrlExceptionCode()))
                 .message(e.getMessage()).build();
         return ResponseEntity.status(e.getStatusCode())
                 .body(response);
@@ -20,6 +21,7 @@ public class UrlExceptionHandler {
     @ExceptionHandler({ValidationException.class, BindException.class})
     public ResponseEntity<UrlExceptionResponse> handleValidationException(Exception e) {
         UrlExceptionResponse response = UrlExceptionResponse.builder()
+                .code(String.valueOf(UrlExceptionCode.INVALID_DATA))
                 .message(UrlExceptionCode.INVALID_DATA.getMessage()).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -27,7 +29,8 @@ public class UrlExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<UrlExceptionResponse> handleRemainException(Exception e) {
         UrlExceptionResponse response = UrlExceptionResponse.builder()
-                .message("알 수 없는 오류가 발생했습니다!").build();
+                .code(String.valueOf(UrlExceptionCode.INTERNAL_ERROR))
+                .message(UrlExceptionCode.INTERNAL_ERROR.getMessage()).build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
