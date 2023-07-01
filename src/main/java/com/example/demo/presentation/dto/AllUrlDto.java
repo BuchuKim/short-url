@@ -1,6 +1,5 @@
 package com.example.demo.presentation.dto;
 
-import com.example.demo.domain.ShortenUrl;
 import lombok.Builder;
 import lombok.Getter;
 
