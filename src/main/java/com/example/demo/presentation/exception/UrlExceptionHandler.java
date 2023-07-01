@@ -1,5 +1,6 @@
-package com.example.demo.exception;
+package com.example.demo.presentation.exception;
 
+import com.example.demo.presentation.dto.UrlExceptionResponse;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

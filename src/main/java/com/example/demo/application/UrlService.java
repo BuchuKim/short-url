@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.application;
 
-import com.example.demo.data.UrlData;
-import com.example.demo.dto.UrlRecordDto;
-import com.example.demo.exception.UrlException;
-import com.example.demo.exception.UrlExceptionCode;
+import com.example.demo.infrastructure.UrlData;
+import com.example.demo.presentation.dto.UrlRecordDto;
+import com.example.demo.presentation.exception.UrlException;
+import com.example.demo.presentation.exception.UrlExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

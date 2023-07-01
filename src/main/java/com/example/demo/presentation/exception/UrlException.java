@@ -1,5 +1,6 @@
-package com.example.demo.exception;
+package com.example.demo.presentation.exception;
 
+import com.example.demo.presentation.exception.UrlExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

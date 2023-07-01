@@ -1,10 +1,10 @@
-package com.example.demo.controller;
+package com.example.demo.presentation.controller;
 
 
-import com.example.demo.dto.DecodingUrl;
-import com.example.demo.dto.EncodingUrl;
-import com.example.demo.dto.ReqNumResponse;
-import com.example.demo.service.UrlService;
+import com.example.demo.presentation.dto.DecodingUrl;
+import com.example.demo.presentation.dto.EncodingUrl;
+import com.example.demo.presentation.dto.ReqNumResponse;
+import com.example.demo.application.UrlService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
