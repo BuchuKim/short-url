@@ -6,12 +6,9 @@ import com.example.demo.infrastructure.UrlRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 @Service
 @Slf4j
@@ -19,7 +16,6 @@ import java.net.URL;
 public class UrlService {
     private final UrlRepositoryImpl urlRepository;
 
-    @Transactional
     public ShortenUrl shortenUrl(String originalUrl) {
         validateUrl(originalUrl);
 
@@ -34,7 +30,6 @@ public class UrlService {
                 .build());
     }
 
-    @Transactional(readOnly = true)
     public String getOriginalUrl(String shortenUrl) {
         ShortenUrl found = urlRepository.findByShortenUrl(shortenUrl);
         return found.getOriginalUrl();
