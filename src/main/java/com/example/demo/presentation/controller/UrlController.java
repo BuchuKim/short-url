@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +29,10 @@ public class UrlController {
 
     @GetMapping("/url")
     public ResponseEntity<AllUrlDto> getAllUrls() {
-        List<ShortenUrl> urls = urlRepository.findAll();
-        return ResponseEntity.ok(
+        List<UrlRecordDto> urls = urlRepository.findAll().stream()
+                .map(UrlRecordDto::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(
                 AllUrlDto.fromEntity(urls));
     }
 

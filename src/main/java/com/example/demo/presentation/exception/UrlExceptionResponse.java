@@ -1,7 +1,12 @@
 package com.example.demo.presentation.exception;
 
-public class UrlExceptionResponse extends RuntimeException{
-    public UrlExceptionResponse(String message) {
-        super(message);
-    }
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+@Builder
+public class UrlExceptionResponse {
+    private String message;
 }

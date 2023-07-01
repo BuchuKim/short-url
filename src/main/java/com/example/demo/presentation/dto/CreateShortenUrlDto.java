@@ -1,7 +1,6 @@
 package com.example.demo.presentation.dto;
 
 import com.example.demo.domain.ShortenUrl;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +10,6 @@ public class CreateShortenUrlDto {
     @Getter
     @NoArgsConstructor
     public static class Request {
-        @NotBlank
         @NotNull
         private String originalUrl;
     }

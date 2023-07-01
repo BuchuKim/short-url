@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Service
 @Slf4j
@@ -38,8 +38,8 @@ public class UrlService {
 
     private void validateUrl(String url) {
         try {
-            new URI(url);
-        } catch (URISyntaxException e) {
+            new URL(url);
+        } catch (MalformedURLException e) {
             throw new InvalidUrlException();
         }
     }

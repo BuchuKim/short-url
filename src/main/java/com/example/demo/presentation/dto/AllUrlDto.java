@@ -9,10 +9,10 @@ import java.util.List;
 @Builder
 @Getter
 public class AllUrlDto {
-    private List<ShortenUrl> urls;
+    private List<UrlRecordDto> urls;
     private int totalSize;
 
-    public static AllUrlDto fromEntity(List<ShortenUrl> urls) {
+    public static AllUrlDto fromEntity(List<UrlRecordDto> urls) {
         return AllUrlDto.builder()
                 .urls(urls)
                 .totalSize(urls.size())

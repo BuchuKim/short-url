@@ -3,10 +3,12 @@ package com.example.demo.infrastructure;
 import com.example.demo.domain.ShortenUrl;
 import com.example.demo.domain.UrlNotFoundException;
 import com.example.demo.domain.UrlRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UrlRepositoryImpl implements UrlRepository {
     private final List<ShortenUrl> shortenUrls = new ArrayList<>();
 
