@@ -32,6 +32,7 @@ public class UrlService {
 
     public String getOriginalUrl(String shortenUrl) {
         ShortenUrl found = urlRepository.findByShortenUrl(shortenUrl);
+        found.addRequestedNumber();
         return found.getOriginalUrl();
     }
 
