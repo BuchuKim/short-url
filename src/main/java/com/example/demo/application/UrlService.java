@@ -2,7 +2,7 @@ package com.example.demo.application;
 
 import com.example.demo.domain.InvalidUrlException;
 import com.example.demo.domain.ShortenUrl;
-import com.example.demo.infrastructure.UrlRepositoryImpl;
+import com.example.demo.domain.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.net.URL;
 @Slf4j
 @RequiredArgsConstructor
 public class UrlService {
-    private final UrlRepositoryImpl urlRepository;
+    private final UrlRepository urlRepository;
 
     public ShortenUrl shortenUrl(String originalUrl) {
         validateUrl(originalUrl);
