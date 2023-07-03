@@ -3,38 +3,39 @@ package com.example.demo.infrastructure;
 import com.example.demo.domain.ShortenUrl;
 import com.example.demo.domain.UrlNotFoundException;
 import com.example.demo.domain.UrlRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Profile("list")
-public class UrlRepositoryListImpl implements UrlRepository {
-    private final List<ShortenUrl> shortenUrls = new ArrayList<>();
+@Profile("jpa")
+@RequiredArgsConstructor
+public class UrlRepositoryImpl implements UrlRepository {
+    @Autowired
+    private final UrlJpaRepository urlJpaRepository;
 
     @Override
     public List<ShortenUrl> findAll() {
-        // deep copy
-        return new ArrayList<>(shortenUrls);
+
+        return urlJpaRepository.findAll();
     }
 
     @Override
     public ShortenUrl findByShortenUrl(String shortenUrl) {
-        int index = ShortenUrl.decodeUrlIndex(shortenUrl);
-        if (index < 0 || index >= shortenUrls.size()) throw new UrlNotFoundException();
-        return shortenUrls.get(index);
+        return urlJpaRepository.findByShortenUrl(shortenUrl)
+                .orElseThrow(UrlNotFoundException::new);
     }
 
     @Override
     public ShortenUrl save(ShortenUrl shortenUrl) {
-        shortenUrls.add(shortenUrl);
-        return shortenUrl;
+        return urlJpaRepository.save(shortenUrl);
     }
 
     @Override
     public int getTotalUrlSize() {
-        return shortenUrls.size();
+        return (int) urlJpaRepository.count();
     }
 }

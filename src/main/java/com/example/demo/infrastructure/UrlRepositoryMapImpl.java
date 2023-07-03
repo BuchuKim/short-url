@@ -3,14 +3,16 @@ package com.example.demo.infrastructure;
 import com.example.demo.domain.ShortenUrl;
 import com.example.demo.domain.UrlNotFoundException;
 import com.example.demo.domain.UrlRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
+@Profile("map")
 public class UrlRepositoryMapImpl implements UrlRepository {
     private final Map<String, String> urls = new HashMap<>();
 
