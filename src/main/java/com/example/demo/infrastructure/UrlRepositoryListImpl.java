@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class UrlRepositoryImpl implements UrlRepository {
+public class UrlRepositoryListImpl implements UrlRepository {
     private final List<ShortenUrl> shortenUrls = new ArrayList<>();
 
     @Override
