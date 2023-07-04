@@ -26,16 +26,6 @@ public class ShortenUrl {
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int STRING_LENGTH = 7;
 
-    public static String encodeByIndex(int index) {
-        StringBuilder res = new StringBuilder();
-        do {
-            res.append(TABLE.charAt(index % 62));
-            index /= 62;
-        } while (index % 62 > 0);
-
-        return res.toString();
-    }
-
     public static String generateShortenUrl() {
         Random random = new Random(System.currentTimeMillis());
         StringBuilder res = new StringBuilder();
