@@ -13,27 +13,27 @@ import java.util.List;
 @Profile("jpa")
 @RequiredArgsConstructor
 public class UrlRepositoryJpaImpl implements UrlRepository {
-    private final JpaUrlRepository jpaUrlRepository;
+    private final UrlJpaRepository urlJpaRepository;
 
     @Override
     public List<ShortenUrl> findAll() {
 
-        return jpaUrlRepository.findAll();
+        return urlJpaRepository.findAll();
     }
 
     @Override
     public ShortenUrl findByShortenUrl(String shortenUrl) {
-        return jpaUrlRepository.findById(shortenUrl)
+        return urlJpaRepository.findByShortenUrl(shortenUrl)
                 .orElseThrow(UrlNotFoundException::new);
     }
 
     @Override
     public ShortenUrl save(ShortenUrl shortenUrl) {
-        return jpaUrlRepository.save(shortenUrl);
+        return urlJpaRepository.save(shortenUrl);
     }
 
     @Override
     public int getTotalUrlSize() {
-        return (int) jpaUrlRepository.count();
+        return (int) urlJpaRepository.count();
     }
 }
