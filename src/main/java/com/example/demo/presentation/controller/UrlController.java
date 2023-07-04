@@ -3,7 +3,6 @@ package com.example.demo.presentation.controller;
 
 import com.example.demo.application.UrlService;
 import com.example.demo.domain.ShortenUrl;
-import com.example.demo.domain.UrlRepository;
 import com.example.demo.presentation.dto.AllUrlDto;
 import com.example.demo.presentation.dto.CreateShortenUrlDto;
 import com.example.demo.presentation.dto.UrlRecordDto;
@@ -25,11 +24,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UrlController {
     private final UrlService urlService;
-    private final UrlRepository urlRepository;
 
     @GetMapping("/url")
     public ResponseEntity<AllUrlDto> getAllUrls() {
-        List<UrlRecordDto> urls = urlRepository.findAll().stream()
+        List<UrlRecordDto> urls = urlService.getAllUrls().stream()
                 .map(UrlRecordDto::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(
@@ -48,7 +46,7 @@ public class UrlController {
     @GetMapping("/url/{shortenUrl}")
     public ResponseEntity<UrlRecordDto> getUrlRecord(@PathVariable("shortenUrl")
                                              String shortenUrl) {
-        ShortenUrl found = urlRepository.findByShortenUrl(shortenUrl);
+        ShortenUrl found = urlService.getByShortenUrl(shortenUrl);
         return ResponseEntity.ok().body(
                 UrlRecordDto.fromEntity(found));
     }

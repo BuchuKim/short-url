@@ -2,6 +2,7 @@ package com.example.demo.application;
 
 import com.example.demo.domain.InvalidUrlException;
 import com.example.demo.domain.ShortenUrl;
+import com.example.demo.domain.UrlNotFoundException;
 import com.example.demo.domain.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -19,9 +21,10 @@ public class UrlService {
     public ShortenUrl shortenUrl(String originalUrl) {
         validateUrl(originalUrl);
 
-        // index 값이 key 이기 때문에... 먼저 size 받아오기
-        int index = urlRepository.getTotalUrlSize();
-        String shortenUrl = ShortenUrl.encodeByIndex(index);
+        String shortenUrl = ShortenUrl.generateShortenUrl();
+        while (urlRepository.findByShortenUrl(shortenUrl).isPresent()) {
+            shortenUrl = ShortenUrl.generateShortenUrl();
+        }
 
         return urlRepository.save(
                 ShortenUrl.builder()
@@ -31,9 +34,19 @@ public class UrlService {
     }
 
     public String getOriginalUrl(String shortenUrl) {
-        ShortenUrl found = urlRepository.findByShortenUrl(shortenUrl);
+        ShortenUrl found = urlRepository.findByShortenUrl(shortenUrl)
+                .orElseThrow(UrlNotFoundException::new);
         found.addRequestedNumber();
         return found.getOriginalUrl();
+    }
+
+    public ShortenUrl getByShortenUrl(String shortenUrl) {
+        return urlRepository.findByShortenUrl(shortenUrl)
+                .orElseThrow(UrlNotFoundException::new);
+    }
+
+    public List<ShortenUrl> getAllUrls() {
+        return urlRepository.findAll();
     }
 
     private void validateUrl(String url) {
