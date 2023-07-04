@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Random;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,8 @@ public class ShortenUrl {
 
     private static final String TABLE =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int STRING_LENGTH = 7;
+
     public static String encodeByIndex(int index) {
         StringBuilder res = new StringBuilder();
         do {
@@ -32,14 +36,16 @@ public class ShortenUrl {
         return res.toString();
     }
 
-    public static int decodeUrlIndex(String shortenUrl) {
-        int index = 0;
-        int pow = 1;
-        for (char s : shortenUrl.toCharArray()) {
-            index += TABLE.indexOf(s) * pow;
-            pow *= 62;
+    public static String generateShortenUrl() {
+        Random random = new Random(System.currentTimeMillis());
+        StringBuilder res = new StringBuilder();
+
+        for (int i = 0; i < STRING_LENGTH; i++) {
+            int randomIndex = random.nextInt(TABLE.length());
+            res.append(TABLE.charAt(randomIndex));
         }
-        return index;
+
+        return res.toString();
     }
 
     public void addRequestedNumber() {

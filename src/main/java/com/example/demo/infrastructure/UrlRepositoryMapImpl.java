@@ -1,7 +1,6 @@
 package com.example.demo.infrastructure;
 
 import com.example.demo.domain.ShortenUrl;
-import com.example.demo.domain.UrlNotFoundException;
 import com.example.demo.domain.UrlRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -28,24 +28,21 @@ public class UrlRepositoryMapImpl implements UrlRepository {
     }
 
     @Override
-    public ShortenUrl findByShortenUrl(String shortenUrl) {
+    public Optional<ShortenUrl> findByShortenUrl(String shortenUrl) {
         String originalUrl = urls.get(shortenUrl);
-        if (originalUrl==null) throw new UrlNotFoundException();
-
-        return ShortenUrl.builder()
-                .originalUrl(originalUrl)
-                .shortenUrl(shortenUrl)
-                .build();
+        if (originalUrl==null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(ShortenUrl.builder()
+                    .originalUrl(originalUrl)
+                    .shortenUrl(shortenUrl)
+                    .build());
+        }
     }
 
     @Override
     public ShortenUrl save(ShortenUrl shortenUrl) {
         urls.put(shortenUrl.getShortenUrl(),shortenUrl.getOriginalUrl());
         return shortenUrl;
-    }
-
-    @Override
-    public int getTotalUrlSize() {
-        return urls.size();
     }
 }
