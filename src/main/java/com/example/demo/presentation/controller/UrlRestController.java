@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class UrlController {
+public class UrlRestController {
     private final UrlService urlService;
 
     @GetMapping("/url")
@@ -52,8 +52,9 @@ public class UrlController {
     }
 
     @GetMapping("/{shortenUrl}")
-    public ResponseEntity<?> redirect(@PathVariable("shortenUrl")
+    public ResponseEntity<?> redirect(@PathVariable(value = "shortenUrl")
                                      String shortenUrl) throws URISyntaxException {
+        log.info("리다이렉트 요청 : {}",shortenUrl);
         String originalUrl = urlService.getOriginalUrl(shortenUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(new URI(originalUrl));

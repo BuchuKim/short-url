@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.application.UrlService;
 import com.example.demo.domain.ShortenUrl;
-import com.example.demo.presentation.controller.UrlController;
+import com.example.demo.presentation.controller.UrlRestController;
 import com.example.demo.presentation.dto.CreateShortenUrlDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +19,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(UrlController.class)
+@WebMvcTest(UrlRestController.class)
 @ExtendWith(MockitoExtension.class)
-public class UrlControllerTest {
+public class UrlRestControllerTest {
     @MockBean
     private UrlService urlService;
 
