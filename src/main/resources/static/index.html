@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>단축 URL 서비스!</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<br>
+<div>
+    <h1>URL 생성 폼</h1>
+    <form id="createForm">
+        <label for="originalUrl">원본 URL : </label>
+        <input type="text" id="originalUrl" name="originalUrl" placeholder="http://example.com">
+        <button type="submit">생성</button>
+    </form>
+    <p id="generatedShortenUrl"></p>
+</div>
+<br>
+<div>
+    <h1>단축 URL 조회 폼</h1>
+    <form id="checkForm">
+        <label for="shortenUrl">단축 URL : </label>
+        <input type="text" id="shortenUrl" name="shortenUrl" placeholder="example0">
+        <button type="submit">조회</button>
+    </form>
+    <p id="urlInformation"></p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            const createForm = document.getElementById('createForm');
+            const checkForm = document.getElementById('checkForm');
+
+            createForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(createForm);
+                var requestData = {};
+                formData.forEach(function(value, key) {
+                    requestData[key] = value;
+                });
+                fetch('/url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(function(err) {
+                            throw new Error(err.message);
+                        });
+                    }
+                })
+                .then(function(data) {
+                    const generatedDom = document.getElementById('generatedShortenUrl');
+                    generatedDom.innerHTML = "생성된 단축 URL : " + data.shortenUrl;
+                })
+                .catch(function(error) {
+                    const generatedDom = document.getElementById('generatedShortenUrl');
+                    generatedDom.innerHTML = "잘못된 URL입니다.";
+                });
+            });
+
+            checkForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(checkForm);
+                var requestData = {};
+                formData.forEach(function(value, key) {
+                    requestData[key] = value;
+                });
+
+                fetch('/url/'+requestData.shortenUrl, {
+                    method: 'GET',
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(function(err) {
+                            throw new Error(err.message);
+                        });
+                    }
+                })
+                .then(function(data) {
+                    urlInformation.innerHTML = "원본 URL : " + data.originalUrl + "<br>"
+                            + "요청 횟수 : " + data.requestedNumber;
+                })
+                .catch(function(error) {
+                    urlInformation.innerHTML = "존재하지 않는 단축 URL입니다."
+                });
+            });
+        });
+</script>
+</body>
+</html>
