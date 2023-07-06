@@ -34,6 +34,8 @@
     <p id="urlInformation"></p>
 </div>
 <script>
+    const host = window.location.host;
+
     document.addEventListener('DOMContentLoaded', function() {
             const createForm = document.getElementById('createForm');
             const checkForm = document.getElementById('checkForm');
@@ -63,11 +65,21 @@
                 })
                 .then(function(data) {
                     const generatedDom = document.getElementById('generatedShortenUrl');
-                    generatedDom.innerHTML = "생성된 단축 URL : " + data.shortenUrl;
+                    const shortenUrl = host + '/' + data.shortenUrl;
+
+                    const copyButton = document.createElement('button');
+                    copyButton.textContent = '복사';
+                    copyButton.setAttribute('type', 'button');
+                    copyButton.addEventListener('click',function() {
+                        navigator.clipboard.writeText(shortenUrl);
+                    });
+
+                    generatedDom.innerHTML = '생성! : ' + shortenUrl;
+                    generatedDom.appendChild(copyButton);
                 })
                 .catch(function(error) {
                     const generatedDom = document.getElementById('generatedShortenUrl');
-                    generatedDom.innerHTML = "잘못된 URL입니다.";
+                    generatedDom.innerHTML = error;
                 });
             });
 
@@ -97,7 +109,7 @@
                             + "요청 횟수 : " + data.requestedNumber;
                 })
                 .catch(function(error) {
-                    urlInformation.innerHTML = "존재하지 않는 단축 URL입니다."
+                    urlInformation.innerHTML = error;
                 });
             });
         });
